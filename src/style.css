@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background-color: #0b0c10;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  background: radial-gradient(circle at center, #1f2833 0%, #0b0c10 100%);
+}
+
+#screen-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: #14171c;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 37, 33, 0.2);
+  border: 4px solid #323846;
+}
+
+#game-canvas {
+  width: min(85vw, 960px);
+  aspect-ratio: 4 / 3;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background-color: #5c94fc;
+  border-radius: 4px;
+  display: block;
+}
+
+/* UI Overlay & Menu Cards */
+#game-ui-overlay,
+#leaderboard-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.menu-card,
+.modal-box {
+  background: #1f222a;
+  border: 4px solid #e52521;
+  box-shadow: 0 0 30px rgba(229, 37, 33, 0.5), inset 0 0 15px rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  padding: 24px;
+  width: min(90vw, 540px);
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.game-logo {
+  font-size: clamp(20px, 4vw, 32px);
+  color: #e52521;
+  text-shadow: 3px 3px 0px #f8b800, 6px 6px 0px #000;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.subtitle-badge {
+  font-size: 10px;
+  color: #80d010;
+  letter-spacing: 1px;
+}
+
+.pixel-text {
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+.gold-text {
+  color: #f8b800;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.red-text {
+  color: #e52521;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.highlight {
+  color: #f8b800;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-size: 10px;
+  color: #8a9ba8;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.level-select-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.level-select-row .retro-btn {
+  flex: 1;
+  font-size: 9px;
+  padding: 10px 4px;
+}
+
+.retro-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  padding: 12px 16px;
+  background: #2b313f;
+  color: #ffffff;
+  border: 2px solid #5a647a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 0 4px 0 #181b22;
+}
+
+.retro-btn:hover {
+  background: #3e4659;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #181b22;
+}
+
+.retro-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #181b22;
+}
+
+.primary-btn {
+  background: #e52521;
+  border-color: #ff5e5b;
+  box-shadow: 0 4px 0 #900c09;
+}
+
+.primary-btn:hover {
+  background: #ff3b37;
+}
+
+.secondary-btn {
+  background: #0070ec;
+  border-color: #4da6ff;
+  box-shadow: 0 4px 0 #004599;
+}
+
+.secondary-btn:hover {
+  background: #1a88ff;
+}
+
+.danger-btn {
+  background: #b81414;
+  border-color: #ff4d4d;
+}
+
+.footer-hint {
+  font-size: 9px;
+  color: #7b889b;
+  margin-top: 6px;
+}
+
+/* Controls Grid */
+.controls-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+  background: #14171c;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 10px;
+  border: 1px solid #333a48;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.key-badge {
+  background: #323846;
+  color: #f8b800;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #5a647a;
+}
+
+.gameplay-tips {
+  font-size: 9px;
+  color: #a4b2c6;
+  text-align: left;
+  line-height: 1.6;
+  background: #14171c;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Leaderboard Table */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+  text-align: left;
+  background: #14171c;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.leaderboard-table th {
+  background: #282f3d;
+  color: #f8b800;
+  padding: 8px 6px;
+  border-bottom: 2px solid #434e63;
+}
+
+.leaderboard-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #232833;
+}
+
+.player-name {
+  color: #5c94fc;
+}
+
+.player-score {
+  color: #80d010;
+  font-weight: bold;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.save-score-form label {
+  font-size: 9px;
+  color: #a4b2c6;
+}
+
+.save-score-form input {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  padding: 8px 10px;
+  background: #14171c;
+  color: #f8b800;
+  border: 2px solid #5a647a;
+  border-radius: 4px;
+  text-align: center;
+  width: 160px;
+}
+
+.status-msg {
+  font-size: 10px;
+  color: #80d010;
+  min-height: 16px;
+}
+
+/* Mobile Virtual Controls */
+#virtual-controls {
+  display: none;
+  width: min(90vw, 720px);
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 4px 12px;
+}
+
+.v-dpad,
+.v-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.v-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(43, 49, 63, 0.85);
+  color: #fff;
+  border: 2px solid #5a647a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.v-btn:active {
+  background: #e52521;
+}
+
+@media (pointer: coarse), (max-width: 768px) {
+  #virtual-controls {
+    display: flex;
+  }
+}
+

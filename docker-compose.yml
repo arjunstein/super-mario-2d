@@ -1,0 +1,16 @@
+services:
+  mario-game:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: super-mario-2d
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_PATH=/app/data/mario.db
+    restart: unless-stopped
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Super Mario 2D - TypeScript & SQLite</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23e52521'/><rect x='4' y='4' width='8' height='8' fill='%23fc9838'/></svg>" />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <div id="app-container">
+      <div id="screen-wrapper">
+        <canvas id="game-canvas" width="320" height="240"></canvas>
+      </div>
+
+      <!-- Virtual Controls for Mobile / Touch Devices -->
+      <div id="virtual-controls">
+        <div class="v-dpad">
+          <button id="v-left" class="v-btn">◀</button>
+          <button id="v-right" class="v-btn">▶</button>
+        </div>
+        <div class="v-buttons">
+          <button id="v-run" class="v-btn">B</button>
+          <button id="v-jump" class="v-btn">A</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
+
