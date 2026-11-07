@@ -7,7 +7,7 @@ import { TILE_SIZE } from '../engine/Physics.js';
 export interface LevelData {
   world: string;
   name: string;
-  theme: 'overworld' | 'underground' | 'castle';
+  theme: 'overworld' | 'underground' | 'athletic' | 'night' | 'castle';
   time: number;
   width: number;
   height: number;

@@ -329,12 +329,32 @@ export class SoundEngine {
       { f: 196, d: 0.15 }, { f: 392, d: 0.15 }, { f: 185, d: 0.25 }, { f: 0, d: 0.15 },
     ];
 
+    const athleticMelody = [
+      { f: 392, d: 0.1 }, { f: 523, d: 0.1 }, { f: 659, d: 0.1 }, { f: 784, d: 0.15 },
+      { f: 659, d: 0.1 }, { f: 784, d: 0.1 }, { f: 880, d: 0.2 }, { f: 0, d: 0.1 },
+      { f: 587, d: 0.1 }, { f: 659, d: 0.1 }, { f: 523, d: 0.2 }, { f: 0, d: 0.1 },
+    ];
+
+    const nightMelody = [
+      { f: 294, d: 0.18 }, { f: 330, d: 0.18 }, { f: 392, d: 0.18 }, { f: 440, d: 0.25 },
+      { f: 392, d: 0.18 }, { f: 330, d: 0.18 }, { f: 261, d: 0.35 }, { f: 0, d: 0.15 },
+    ];
+
     const castleMelody = [
       { f: 130, d: 0.15 }, { f: 146, d: 0.15 }, { f: 130, d: 0.15 }, { f: 123, d: 0.2 },
       { f: 164, d: 0.15 }, { f: 155, d: 0.15 }, { f: 146, d: 0.3 }, { f: 0, d: 0.15 },
     ];
 
-    const melody = level === 1 ? overworldMelody : level === 2 ? undergroundMelody : castleMelody;
+    const melody =
+      level === 1
+        ? overworldMelody
+        : level === 2
+        ? undergroundMelody
+        : level === 3
+        ? athleticMelody
+        : level === 4
+        ? nightMelody
+        : castleMelody;
     let stepIndex = 0;
 
     const playStep = () => {

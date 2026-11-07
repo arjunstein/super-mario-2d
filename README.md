@@ -1,4 +1,4 @@
-# 🍄 Super Mario 2D (3-Level Platformer)
+# 🍄 Super Mario 2D (5-Level Platformer)
 
 A classic 2D Super Mario platformer built from scratch using **TypeScript**, **SQLite**, and **Docker**. This project is completely self-contained with **zero local host dependencies** — you don't need Node.js, npm, or SQLite installed on your machine. Simply launch it with Docker!
 
@@ -37,7 +37,7 @@ docker compose down
 
 ---
 
-## 🗺️ 3 Themed Levels
+## 🗺️ 5 Themed Levels
 
 1. **World 1-1 (Overworld)**:
    - Classic grassy hills, blue skies, and fluffy clouds.
@@ -48,9 +48,19 @@ docker compose down
 2. **World 1-2 (Underground Cavern)**:
    - Subterranean stone cavern with low brick ceilings and perilous floating platforms.
    - **Koopa Troopa** enemies: stomp to retract into a shell, then kick the sliding shell to eliminate other enemies in its path!
-   - Warp pipe exit at the end leading up to Bowser's domain.
+   - Warp pipe exit at the end leading up to the treetop canopies.
 
-3. **World 1-3 (Bowser's Castle & Boss Fight)**:
+3. **World 1-3 (Athletic Treetops)**:
+   - Sunset peach skies with floating pink clouds and towering mushroom platforms.
+   - High-altitude precision platforming with narrow stepping stones and deep drops.
+   - Parapet staircases leading to the mountain flagpole.
+
+4. **World 1-4 (Night Ruins)**:
+   - Deep midnight blue sky illuminated by glittering stars and a crescent moon.
+   - Ancient stone fortress ruins guarded by spinning **Firebar** obstacles and Koopas.
+   - Subterranean warp pipe descending directly into Bowser's stronghold.
+
+5. **World 1-5 (Bowser's Castle & Final Boss Fight)**:
    - Dark fortress with bubbling lava pits (instant elimination on contact).
    - Rotating **Firebar** obstacles and floating battlements.
    - **Bowser Boss Fight** stationed across a drawbridge over molten lava: Bowser hops and unleashes fireballs.

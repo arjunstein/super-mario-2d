@@ -12,6 +12,8 @@ import { Level } from '../levels/Level.js';
 import { getLevel1Data } from '../levels/Level1.js';
 import { getLevel2Data } from '../levels/Level2.js';
 import { getLevel3Data } from '../levels/Level3.js';
+import { getLevel4Data } from '../levels/Level4.js';
+import { getLevel5Data } from '../levels/Level5.js';
 import { HUD } from '../ui/HUD.js';
 import { Menu } from '../ui/Menu.js';
 import { rectsOverlap, TILE_SIZE } from './Physics.js';
@@ -109,7 +111,11 @@ export class Game {
         ? getLevel1Data()
         : levelIndex === 2
         ? getLevel2Data()
-        : getLevel3Data();
+        : levelIndex === 3
+        ? getLevel3Data()
+        : levelIndex === 4
+        ? getLevel4Data()
+        : getLevel5Data();
 
     this.level = new Level(data);
     this.camera.setLevelBounds(this.level.getPixelWidth());
@@ -421,13 +427,18 @@ export class Game {
       if (this.player.isVictory) {
         this.levelClearTimer += dt;
         if (this.levelClearTimer > 3.0) {
-          // Transition to Level 2
-          this.loadLevel(2);
+          if (this.currentLevelIndex < 5) {
+            this.loadLevel(this.currentLevelIndex + 1);
+          } else {
+            this.state = 'VICTORY';
+            sounds.playStageClear();
+            this.menu.showVictoryScreen(this.score, this.coins, this.timeLeft);
+          }
         }
       }
     }
 
-    // Level 2: Warp Pipe Exit
+    // Pipe Goal Exit
     if (this.level.data.goalType === 'pipe') {
       const pipeX = this.level.data.goalX;
       if (this.player.x >= pipeX - 4 && !this.player.isVictory) {
@@ -439,8 +450,13 @@ export class Game {
       if (this.player.isVictory) {
         this.levelClearTimer += dt;
         if (this.levelClearTimer > 2.5) {
-          // Transition to Level 3
-          this.loadLevel(3);
+          if (this.currentLevelIndex < 5) {
+            this.loadLevel(this.currentLevelIndex + 1);
+          } else {
+            this.state = 'VICTORY';
+            sounds.playStageClear();
+            this.menu.showVictoryScreen(this.score, this.coins, this.timeLeft);
+          }
         }
       }
     }
@@ -498,6 +514,12 @@ export class Game {
       this.renderer.drawOverworldBackground(camX);
     } else if (theme === 'underground') {
       this.renderer.clear('#000000');
+    } else if (theme === 'athletic') {
+      this.renderer.clear('#fc9838');
+      this.renderer.drawAthleticBackground(camX);
+    } else if (theme === 'night') {
+      this.renderer.clear('#081028');
+      this.renderer.drawNightBackground(camX);
     } else {
       this.renderer.clear('#110808');
       this.renderer.drawCastleBackground(camX);

@@ -2,126 +2,115 @@ import { LevelData } from './Level.js';
 import { TileType } from '../engine/Types.js';
 
 export function getLevel3Data(): LevelData {
-  const width = 130;
+  const width = 125;
   const height = 15;
 
   const tiles: number[][] = Array.from({ length: height }, () => Array(width).fill(TileType.EMPTY));
 
-  // Castle ceiling
-  for (let x = 0; x < width; x++) {
-    tiles[0][x] = TileType.CASTLE_BRICK;
-    tiles[1][x] = TileType.CASTLE_BRICK;
+  // Ground only at start and end
+  // Start platform (x: 0..12)
+  for (let x = 0; x <= 12; x++) {
+    tiles[13][x] = TileType.GROUND;
+    tiles[14][x] = TileType.GROUND;
   }
 
-  // Castle floor and lava pits
-  for (let x = 0; x < width; x++) {
-    // Fill bottom rows with lava by default
-    tiles[14][x] = TileType.LAVA;
+  // End platform (x: 95..124)
+  for (let x = 95; x < width; x++) {
+    tiles[13][x] = TileType.GROUND;
+    tiles[14][x] = TileType.GROUND;
+  }
 
-    // Stone platforms vs Lava pools
-    // Safe stone floor: 0..24, 34..50, 62..75, 114..129
-    if (
-      (x >= 0 && x <= 24) ||
-      (x >= 34 && x <= 50) ||
-      (x >= 62 && x <= 75) ||
-      (x >= 114 && x <= 129)
-    ) {
-      tiles[13][x] = TileType.CASTLE_BRICK;
-      tiles[14][x] = TileType.CASTLE_BRICK;
-    } else {
-      // Lava pool
-      tiles[13][x] = TileType.LAVA;
-      tiles[14][x] = TileType.LAVA;
+  // Helper to place mushroom/treetop platform
+  const placePlatform = (startX: number, endX: number, y: number, stemX?: number) => {
+    for (let x = startX; x <= endX; x++) {
+      tiles[y][x] = TileType.BRICK;
     }
-  }
+    // Optional tree stem
+    if (stemX !== undefined) {
+      for (let sy = y + 1; sy <= 14; sy++) {
+        tiles[sy][stemX] = TileType.STAIR_BLOCK;
+      }
+    }
+  };
 
-  // Floating stepping stones over first lava pool (x: 25..33)
-  tiles[11][26] = TileType.CASTLE_BRICK;
-  tiles[11][27] = TileType.CASTLE_BRICK;
-  tiles[9][30] = TileType.CASTLE_BRICK;
-  tiles[9][31] = TileType.CASTLE_BRICK;
+  // High treetop platforms
+  placePlatform(16, 23, 10, 19);
+  tiles[10][18] = TileType.QUESTION_COIN;
+  tiles[10][21] = TileType.QUESTION_MUSHROOM;
 
-  // Question blocks & castle obstacles
-  tiles[9][14] = TileType.QUESTION_COIN;
-  tiles[9][16] = TileType.QUESTION_MUSHROOM;
-  tiles[9][18] = TileType.QUESTION_COIN;
+  placePlatform(27, 33, 8, 30);
+  tiles[8][29] = TileType.QUESTION_COIN;
+  tiles[8][31] = TileType.QUESTION_COIN;
 
-  // Mid castle fortress blocks
-  for (let x = 40; x <= 46; x++) {
-    tiles[9][x] = TileType.CASTLE_BRICK;
-    tiles[5][x] = TileType.CASTLE_BRICK;
-  }
-  tiles[9][43] = TileType.QUESTION_COIN;
+  placePlatform(37, 44, 6, 40);
+  tiles[6][39] = TileType.QUESTION_COIN;
+  tiles[6][42] = TileType.QUESTION_COIN;
 
-  // Stepping stones over second lava pool (x: 51..61)
-  tiles[10][53] = TileType.CASTLE_BRICK;
-  tiles[8][56] = TileType.CASTLE_BRICK;
-  tiles[10][59] = TileType.CASTLE_BRICK;
+  // Middle stepping stones
+  placePlatform(48, 52, 9, 50);
+  placePlatform(56, 61, 7, 58);
+  tiles[7][59] = TileType.QUESTION_MUSHROOM;
 
-  // High castle battlements
-  for (let step = 0; step < 4; step++) {
+  placePlatform(65, 71, 10, 68);
+  tiles[10][67] = TileType.QUESTION_COIN;
+  tiles[10][69] = TileType.QUESTION_COIN;
+
+  placePlatform(75, 83, 8, 79);
+  tiles[8][77] = TileType.QUESTION_COIN;
+  tiles[8][81] = TileType.QUESTION_COIN;
+
+  placePlatform(87, 92, 10, 89);
+
+  // End staircase to Flagpole
+  const stairStart = 98;
+  for (let step = 0; step < 6; step++) {
     for (let y = 12 - step; y <= 12; y++) {
-      tiles[y][68 + step] = TileType.CASTLE_BRICK;
+      tiles[y][stairStart + step] = TileType.STAIR_BLOCK;
     }
   }
 
-  // Pre-Boss corridor
-  for (let x = 72; x <= 85; x++) {
-    tiles[8][x] = TileType.CASTLE_BRICK;
+  // Flagpole at x = 112
+  const flagX = 112;
+  tiles[3][flagX] = TileType.FLAGTOP;
+  for (let y = 4; y <= 12; y++) {
+    tiles[y][flagX] = TileType.FLAGPOLE;
   }
-  tiles[8][78] = TileType.QUESTION_MUSHROOM;
+  tiles[12][flagX] = TileType.STAIR_BLOCK;
 
-  // The Grand Bowser Bridge (x: 88 to 110) over bottomless lava!
-  for (let x = 88; x <= 110; x++) {
-    tiles[11][x] = TileType.BRIDGE;
-  }
-
-  // Axe Switch on safe ground past bridge (x: 112)
-  const axeX = 112;
-  tiles[11][111] = TileType.CASTLE_BRICK;
-  tiles[12][111] = TileType.CASTLE_BRICK;
-  tiles[13][111] = TileType.CASTLE_BRICK;
-
-  tiles[10][axeX] = TileType.AXE;
-  tiles[11][axeX] = TileType.CASTLE_BRICK;
-  tiles[12][axeX] = TileType.CASTLE_BRICK;
-  tiles[13][axeX] = TileType.CASTLE_BRICK;
-
-  // Victory Chamber past the Axe
-  for (let x = 114; x < width; x++) {
-    tiles[12][x] = TileType.CASTLE_BRICK;
-    tiles[13][x] = TileType.CASTLE_BRICK;
+  // Castle wall at end
+  for (let x = 118; x < width; x++) {
+    for (let y = 8; y <= 12; y++) {
+      tiles[y][x] = TileType.BRICK;
+    }
   }
 
   return {
     world: '1-3',
-    name: "Bowser's Castle",
-    theme: 'castle',
-    time: 300,
+    name: 'Athletic Treetops',
+    theme: 'athletic',
+    time: 350,
     width,
     height,
     tiles,
     enemies: [
-      { kind: 'goomba', x: 18 * 16, y: 12 * 16 },
-      { kind: 'koopa', x: 42 * 16, y: 12 * 16 },
-      { kind: 'koopa', x: 65 * 16, y: 12 * 16 },
-      // Bowser stationed on the bridge!
-      { kind: 'bowser', x: 101 * 16, y: 9 * 16 },
+      { kind: 'goomba', x: 20 * 16, y: 9 * 16 },
+      { kind: 'koopa', x: 30 * 16, y: 7 * 16 },
+      { kind: 'goomba', x: 41 * 16, y: 5 * 16 },
+      { kind: 'koopa', x: 58 * 16, y: 6 * 16 },
+      { kind: 'goomba', x: 68 * 16, y: 9 * 16 },
+      { kind: 'koopa', x: 79 * 16, y: 7 * 16 },
     ],
     collectibles: [
-      { kind: 'coin', x: 15 * 16 + 3, y: 7 * 16 },
-      { kind: 'coin', x: 17 * 16 + 3, y: 7 * 16 },
-      { kind: 'coin', x: 42 * 16 + 3, y: 4 * 16 },
-      { kind: 'coin', x: 44 * 16 + 3, y: 4 * 16 },
-      { kind: 'coin', x: 56 * 16 + 3, y: 6 * 16 },
+      { kind: 'coin', x: 19 * 16 + 3, y: 8 * 16 },
+      { kind: 'coin', x: 28 * 16 + 3, y: 6 * 16 },
+      { kind: 'coin', x: 32 * 16 + 3, y: 6 * 16 },
+      { kind: 'coin', x: 49 * 16 + 3, y: 7 * 16 },
+      { kind: 'coin', x: 51 * 16 + 3, y: 7 * 16 },
+      { kind: 'coin', x: 88 * 16 + 3, y: 8 * 16 },
+      { kind: 'coin', x: 90 * 16 + 3, y: 8 * 16 },
     ],
-    firebars: [
-      { cx: 43 * 16 + 8, cy: 9 * 16 + 8, length: 5, speed: 2.2 },
-      { cx: 78 * 16 + 8, cy: 8 * 16 + 8, length: 5, speed: -2.4 },
-    ],
-    playerSpawn: { x: 35, y: 180 },
-    goalType: 'axe',
-    goalX: axeX * 16,
+    playerSpawn: { x: 40, y: 180 },
+    goalType: 'flag',
+    goalX: flagX * 16,
   };
 }
-

@@ -17,6 +17,7 @@ apiRouter.get('/health', (_req, res) => {
 // Leaderboard endpoints
 apiRouter.get('/leaderboard', (_req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     const list = getLeaderboard();
     res.json({ success: true, data: list });
   } catch (error) {
@@ -27,15 +28,16 @@ apiRouter.get('/leaderboard', (_req, res) => {
 apiRouter.post('/leaderboard', (req, res) => {
   try {
     const { player_name, score, coins, level_completed } = req.body;
-    if (typeof score !== 'number') {
+    const numScore = Number(score);
+    if (isNaN(numScore)) {
       return res.status(400).json({ success: false, error: 'Valid score is required' });
     }
 
     addLeaderboardEntry({
-      player_name: String(player_name || 'MARIO'),
-      score: Number(score) || 0,
+      player_name: String(player_name || 'HERO'),
+      score: numScore,
       coins: Number(coins) || 0,
-      level_completed: Number(level_completed) || 1,
+      level_completed: Number(level_completed) || 5,
     });
 
     const updated = getLeaderboard();

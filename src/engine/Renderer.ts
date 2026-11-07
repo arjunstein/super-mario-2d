@@ -68,6 +68,59 @@ export class Renderer {
     ctx.stroke();
   }
 
+  // Draw Athletic sunset background
+  public drawAthleticBackground(camX: number) {
+    const ctx = this.ctx;
+    // Distant sunset mountains (parallax factor 0.2)
+    const mtnMod = (((camX * 0.2) % 240) + 240) % 240;
+    ctx.fillStyle = '#a04870';
+    for (let i = -1; i < 3; i++) {
+      const mx = i * 240 - mtnMod;
+      this.drawHill(mx, 170, 90, 60);
+      this.drawHill(mx + 130, 185, 70, 45);
+    }
+
+    // High sunset pink/white clouds
+    const cloudMod = (((camX * 0.12 + this.animTimer * 4) % 280) + 280) % 280;
+    ctx.fillStyle = '#ffe8d0';
+    for (let i = -1; i < 3; i++) {
+      const cx = i * 280 - cloudMod;
+      this.drawCloud(cx, 25);
+      this.drawCloud(cx + 150, 55);
+    }
+  }
+
+  // Draw Night starry background
+  public drawNightBackground(camX: number) {
+    const ctx = this.ctx;
+    // Crescent Moon (fixed in sky)
+    ctx.fillStyle = '#fff8b0';
+    ctx.beginPath();
+    ctx.arc(260, 38, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#0a0e1a'; // cutout for crescent
+    ctx.beginPath();
+    ctx.arc(265, 34, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Twinkling stars (parallax factor 0.05)
+    const starParallax = (camX * 0.05) % 320;
+    const starSeeds = [
+      { x: 30, y: 20 }, { x: 75, y: 45 }, { x: 120, y: 15 },
+      { x: 160, y: 50 }, { x: 210, y: 25 }, { x: 280, y: 65 },
+      { x: 45, y: 80 }, { x: 95, y: 95 }, { x: 185, y: 85 },
+      { x: 240, y: 110 }, { x: 310, y: 30 }, { x: 15, y: 60 },
+    ];
+
+    for (let i = 0; i < starSeeds.length; i++) {
+      const s = starSeeds[i];
+      const sx = ((s.x - starParallax + 320) % 320);
+      const twinkle = Math.sin(this.animTimer * 3 + i * 1.5) > 0 ? 2 : 1;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(sx, s.y, twinkle, twinkle);
+    }
+  }
+
   // Draw Castle lava background
   public drawCastleBackground(camX: number) {
     const ctx = this.ctx;

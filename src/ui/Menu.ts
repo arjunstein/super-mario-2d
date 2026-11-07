@@ -34,8 +34,11 @@ export class Menu {
           <button id="btn-play-1" class="retro-btn primary-btn">▶ START WORLD 1-1 (Overworld)</button>
           <button id="btn-load-game" class="retro-btn">💾 RESUME SAVED GAME (SQLite)</button>
           <div class="level-select-row">
-            <button id="btn-play-2" class="retro-btn secondary-btn">World 1-2</button>
-            <button id="btn-play-3" class="retro-btn secondary-btn">World 1-3</button>
+            <button id="btn-play-1-s" class="retro-btn secondary-btn" title="Overworld">W 1-1</button>
+            <button id="btn-play-2" class="retro-btn secondary-btn" title="Underground">W 1-2</button>
+            <button id="btn-play-3" class="retro-btn secondary-btn" title="Athletic">W 1-3</button>
+            <button id="btn-play-4" class="retro-btn secondary-btn" title="Night Ruins">W 1-4</button>
+            <button id="btn-play-5" class="retro-btn secondary-btn" title="Bowser Castle">W 1-5</button>
           </div>
           <button id="btn-leaderboard" class="retro-btn">🏆 HIGH SCORES (SQLite)</button>
           <button id="btn-controls" class="retro-btn info-btn">🎮 CONTROLS & HOW TO PLAY</button>
@@ -66,6 +69,11 @@ export class Menu {
       }
     });
 
+    document.getElementById('btn-play-1-s')?.addEventListener('click', () => {
+      this.hide();
+      this.callbacks.onStartGame(1);
+    });
+
     document.getElementById('btn-play-2')?.addEventListener('click', () => {
       this.hide();
       this.callbacks.onStartGame(2);
@@ -74,6 +82,16 @@ export class Menu {
     document.getElementById('btn-play-3')?.addEventListener('click', () => {
       this.hide();
       this.callbacks.onStartGame(3);
+    });
+
+    document.getElementById('btn-play-4')?.addEventListener('click', () => {
+      this.hide();
+      this.callbacks.onStartGame(4);
+    });
+
+    document.getElementById('btn-play-5')?.addEventListener('click', () => {
+      this.hide();
+      this.callbacks.onStartGame(5);
     });
 
     document.getElementById('btn-leaderboard')?.addEventListener('click', () => {
@@ -178,12 +196,19 @@ export class Menu {
     const submitBtn = document.getElementById('btn-submit-score');
     submitBtn?.addEventListener('click', async () => {
       const input = document.getElementById('player-name-input') as HTMLInputElement;
-      const name = (input?.value || 'PLAYER').trim().toUpperCase();
+      const name = (input?.value || 'MARIO').trim().toUpperCase();
       const feedback = document.getElementById('submit-feedback');
       if (feedback) feedback.innerText = 'Saving to SQLite...';
-      await this.leaderboardModal.submitScore(name, score, coins, levelCompleted);
-      if (feedback) feedback.innerText = '✅ Score recorded!';
-      submitBtn.setAttribute('disabled', 'true');
+      const ok = await this.leaderboardModal.submitScore(name, score, coins, levelCompleted);
+      if (ok) {
+        if (feedback) feedback.innerText = '✅ Score recorded!';
+        submitBtn.setAttribute('disabled', 'true');
+        setTimeout(() => {
+          this.leaderboardModal.show(name);
+        }, 500);
+      } else {
+        if (feedback) feedback.innerText = '❌ Failed to record score.';
+      }
     });
 
     document.getElementById('btn-retry')?.addEventListener('click', () => {
@@ -230,13 +255,22 @@ export class Menu {
       const name = (input?.value || 'HERO').trim().toUpperCase();
       const feedback = document.getElementById('victory-feedback');
       if (feedback) feedback.innerText = 'Saving to SQLite database...';
-      await this.leaderboardModal.submitScore(name, score, coins, 3);
-      if (feedback) feedback.innerText = '✅ Score successfully saved to SQLite!';
-      submitBtn.setAttribute('disabled', 'true');
+      const ok = await this.leaderboardModal.submitScore(name, score, coins, 5);
+      if (ok) {
+        if (feedback) feedback.innerText = '✅ Score recorded! Opening High Scores...';
+        submitBtn.setAttribute('disabled', 'true');
+        setTimeout(() => {
+          this.leaderboardModal.show(name);
+        }, 500);
+      } else {
+        if (feedback) feedback.innerText = '❌ Failed to save. Check server connection.';
+      }
     });
 
     document.getElementById('btn-victory-leaderboard')?.addEventListener('click', () => {
-      this.leaderboardModal.show();
+      const input = document.getElementById('victory-player-name') as HTMLInputElement;
+      const name = input?.value?.trim().toUpperCase();
+      this.leaderboardModal.show(name);
     });
 
     document.getElementById('btn-play-again')?.addEventListener('click', () => {

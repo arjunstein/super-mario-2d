@@ -10,7 +10,7 @@ A 2D Super Mario platformer built from scratch in TypeScript, backed by SQLite (
 - `src/`: Client TypeScript (bundled by Vite to `dist/`).
   - `src/engine/`: Core game loop (`Game.ts`), 2D canvas pixel renderer (`Renderer.ts`), AABB physics and collision (`Physics.ts`), smooth bidirectional camera (`Camera.ts`), Web Audio API procedural sound synthesizer (`Audio.ts`), input management (`Input.ts`), and common types (`Types.ts`).
   - `src/entities/`: Mario (`Player.ts`), enemies (`Enemy.ts`), items (`Collectible.ts`), obstacles (`Firebar.ts`), debris and score popups (`Particle.ts`).
-  - `src/levels/`: Tilemap level definitions (`Level1.ts` Overworld, `Level2.ts` Underground, `Level3.ts` Castle & Bowser).
+  - `src/levels/`: Tilemap level definitions (`Level1.ts` Overworld, `Level2.ts` Underground, `Level3.ts` Athletic Treetops, `Level4.ts` Night Ruins, `Level5.ts` Castle & Bowser).
   - `src/ui/`: Status bar (`HUD.ts`), retro menus (`Menu.ts`), SQLite modal (`LeaderboardModal.ts`).
   - `src/style.css` & `src/main.ts`: Arcade styling and DOM bootstrap.
 - `server/`: Express HTTP server and SQLite backend (compiled to `dist-server/`).
